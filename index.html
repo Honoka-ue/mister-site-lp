@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ミスターサイト公開 | AIで作ったサイトを公開しよう</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700;900&family=Noto+Sans+JP:wght@400;700&family=Dela+Gothic+One&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --yellow:  #38BDF8;
+      --coral:   #0EA5E9;
+      --sky:     #7DD3FC;
+      --purple:  #06B6D4;
+      --navy:    #0C2340;
+      --white:   #FFFFFF;
+      --offwhite:#F0F9FF;
+      --gray:    #E0F2FE;
+      --text:    #0F2744;
+      --accent:  #F97316;
+      --radius:  18px;
+      --font-head: 'Zen Maru Gothic', sans-serif;
+      --font-body: 'Noto Sans JP', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--offwhite);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── Header ── */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--navy);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 5%;
+      box-shadow: 0 4px 20px rgba(0,0,0,.25);
+    }
+    .logo {
+      font-family: 'Dela Gothic One', sans-serif;
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      text-decoration: none;
+      font-weight: 400;
+      letter-spacing: .04em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+    }
+    .logo .l1 { color: #fff; }
+    .logo .l2 { color: #FBBF24; }
+
+    .btn-main {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--white);
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: clamp(.8rem, 2vw, 1rem);
+      padding: 12px 24px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 4px 4px 0 #c2410c;
+      white-space: nowrap;
+    }
+    .btn-main:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #c2410c; }
+
+    /* ── Hero ── */
+    .hero {
+      background: var(--navy); color: var(--white);
+      text-align: center; padding: 80px 5% 100px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(56,189,248,.22) 0%, transparent 55%),
+        radial-gradient(circle at 80% 30%, rgba(6,182,212,.18) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--coral); color: var(--white);
+      font-family: var(--font-head); font-weight: 700; font-size: .85rem;
+      padding: 6px 18px; border-radius: 50px; margin-bottom: 28px;
+      animation: bounce-in .6s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    .hero h1 {
+      font-family: var(--font-head); font-weight: 900;
+      font-size: clamp(1.8rem, 6vw, 3.4rem);
+      line-height: 1.4; margin-bottom: 24px;
+      animation: fade-up .7s .1s both;
+    }
+    .hero h1 em { font-style: normal; color: var(--yellow); }
+    .hero-sub {
+      font-size: clamp(1rem, 3vw, 1.3rem);
+      color: rgba(255,255,255,.82); margin-bottom: 44px;
+      animation: fade-up .7s .2s both;
+    }
+    .hero .btn-main {
+      font-size: clamp(1rem, 3vw, 1.2rem); padding: 18px 44px;
+      animation: fade-up .7s .3s both;
+    }
+
+    .bubble { position: absolute; border-radius: 50%; opacity: .15; animation: float 6s ease-in-out infinite; }
+    .b1 { width:200px;height:200px;background:#38BDF8;top:-60px;right:-40px;animation-delay:0s; }
+    .b2 { width:120px;height:120px;background:#7DD3FC;bottom:20px;left:5%;animation-delay:2s; }
+    .b3 { width:80px;height:80px;background:#06B6D4;top:40%;left:60%;animation-delay:4s; }
+
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
+    @keyframes fade-up { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes bounce-in { 0%{opacity:0;transform:scale(.7)} 80%{transform:scale(1.05)} 100%{opacity:1;transform:scale(1)} }
+
+    /* ── Sections shared ── */
+    section { padding: 80px 5%; }
+    .section-title {
+      font-family: var(--font-head); font-weight: 900;
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      text-align: center; margin-bottom: 48px; position: relative;
+    }
+    .section-title::after {
+      content: ''; display: block; width: 60px; height: 5px;
+      border-radius: 4px; background: var(--coral); margin: 12px auto 0;
+    }
+
+    /* ── For Whom ── */
+    .for-whom { background: var(--gray); }
+    .cards-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: 24px; max-width: 900px; margin: 0 auto;
+    }
+    .card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 36px 28px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.07);
+      transition: transform .25s, box-shadow .25s;
+      position: relative; overflow: hidden;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 12px 36px rgba(0,0,0,.12); }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px;
+    }
+    .card:nth-child(1)::before { background: var(--coral); }
+    .card:nth-child(2)::before { background: var(--yellow); }
+    .card:nth-child(3)::before { background: var(--purple); }
+
+    .card-icon {
+      width: 52px; height: 52px; margin-bottom: 20px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .card:nth-child(1) .card-icon { background: #E0F2FE; }
+    .card:nth-child(2) .card-icon { background: #CFFAFE; }
+    .card:nth-child(3) .card-icon { background: #E0F2FE; }
+    .card-icon svg { width: 28px; height: 28px; }
+    .card p { font-size: 1rem; line-height: 1.8; font-weight: 700; color: var(--text); }
+
+    /* ── Steps ── */
+    .steps-wrap { display:flex;flex-direction:column;gap:0;max-width:700px;margin:0 auto; }
+    .step { display:flex;gap:28px;align-items:flex-start;position:relative; }
+    .step:not(:last-child)::after {
+      content:'';position:absolute;left:35px;top:72px;
+      width:3px;height:calc(100% - 20px);
+      background:linear-gradient(to bottom,#7DD3FC,#0EA5E9);border-radius:2px;
+    }
+    .step-num {
+      flex-shrink:0;width:70px;height:70px;border-radius:50%;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      font-family:var(--font-head);font-size:.6rem;font-weight:700;
+      color:var(--white);z-index:1;box-shadow:0 4px 16px rgba(0,0,0,.2);
+    }
+    .step-num span { font-size:1.5rem;line-height:1; }
+    .step:nth-child(1) .step-num { background:linear-gradient(135deg,#0EA5E9,#38BDF8); }
+    .step:nth-child(2) .step-num { background:linear-gradient(135deg,#06B6D4,#22D3EE); }
+    .step:nth-child(3) .step-num { background:linear-gradient(135deg,#0284C7,#0EA5E9); }
+
+    .step-body {
+      background:var(--white);border-radius:var(--radius);
+      padding:24px 28px;flex:1;margin-bottom:32px;
+      box-shadow:0 4px 20px rgba(0,0,0,.07);
+    }
+    .step-body h3 {
+      font-family:var(--font-head);font-weight:700;font-size:1.1rem;
+      margin-bottom:8px;display:flex;align-items:center;gap:10px;
+    }
+    .step-icon { width:22px;height:22px;flex-shrink:0; }
+    .step-body p { font-size:.95rem;color:#555;line-height:1.7; }
+
+    /* ── Pricing ── */
+    .pricing { background:var(--navy);color:var(--white);text-align:center; }
+    .pricing .section-title { color:var(--white); }
+    .pricing .section-title::after { background:var(--yellow); }
+    .price-card {
+      display:inline-block;background:var(--white);color:var(--text);
+      border-radius:24px;padding:48px 40px;max-width:520px;width:100%;
+      box-shadow: 0 0 0 6px var(--yellow), 0 20px 60px rgba(0,0,0,.25);
+      position:relative;
+    }
+    .price-badge {
+      position:absolute;top:-18px;left:50%;transform:translateX(-50%);
+      background: var(--accent);color:var(--white);
+      font-family:var(--font-head);font-weight:700;font-size:.9rem;
+      padding:8px 24px;border-radius:50px;white-space:nowrap;
+    }
+    .price-old { font-size:1.1rem;color:#999;text-decoration:line-through;margin-bottom:4px; }
+    .price-new { font-family:var(--font-head);font-weight:900;font-size:clamp(2.4rem,8vw,4rem);color:var(--coral);line-height:1;margin-bottom:6px; }
+    .price-note { font-size:.85rem;color:#888;margin-bottom:28px; }
+    .price-includes {
+      list-style:none;text-align:left;border-top:2px dashed #BEE3F8;
+      padding-top:24px;display:flex;flex-direction:column;gap:12px;
+    }
+    .price-includes li { display:flex;align-items:center;gap:10px;font-size:.95rem; }
+    .price-includes li svg { width:18px;height:18px;flex-shrink:0;color:var(--coral); }
+    .price-extra { margin-top:20px;font-size:.85rem;color:#888;padding-top:16px;border-top:2px dashed #BEE3F8; }
+
+    /* ── Notes ── */
+    .notes { background: var(--offwhite); }
+    .notes .section-title { font-size: clamp(1.1rem, 3vw, 1.5rem); color: #888; }
+    .notes .section-title::after { background: #ccc; width: 40px; height: 3px; }
+    .notes-list {
+      max-width: 640px; margin: 0 auto;
+      display: flex; flex-direction: column; gap: 10px;
+      list-style: none;
+    }
+    .notes-list li {
+      display: flex; gap: 10px; align-items: baseline;
+      font-size: .88rem; line-height: 1.7; color: #888;
+      padding: 4px 0;
+      border-bottom: 1px solid #e8e8e0;
+    }
+    .notes-list li:last-child { border-bottom: none; }
+    .notes-list li::before { content: '※'; flex-shrink: 0; color: #bbb; font-size: .85rem; }
+
+    /* ── Form ── */
+    .form-section { background:var(--white);text-align:center; }
+    .iframe-wrap {
+      max-width:700px;margin:0 auto;background:var(--gray);
+      border-radius:var(--radius);overflow:hidden;min-height:520px;
+      display:flex;align-items:center;justify-content:center;
+      border:3px dashed #ccc;
+    }
+    .iframe-placeholder { color:#aaa;font-size:1rem;line-height:1.8; }
+    .iframe-placeholder strong { display:block;font-size:1.3rem;color:#bbb;margin-bottom:8px; }
+
+    /* ── About ── */
+    .about { background:var(--gray);text-align:center; }
+    .about-inner { display:flex;flex-direction:column;align-items:center;gap:28px;max-width:480px;margin:0 auto; }
+    .avatar {
+      width:130px;height:130px;border-radius:50%;
+      background:linear-gradient(135deg,#38BDF8,#0284C7);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 6px 28px rgba(0,0,0,.15);flex-shrink:0; overflow:hidden;
+    }
+    .avatar svg { width:72px;height:72px; }
+    .about-text h3 { font-family:var(--font-head);font-weight:900;font-size:1.3rem;margin-bottom:12px; }
+    .about-text p { font-size:1rem;line-height:1.8;color:#555; }
+
+    /* ── Footer ── */
+    footer { background:var(--navy);color:rgba(255,255,255,.5);text-align:center;padding:32px 5%;font-size:.85rem; }
+
+    @media (max-width:600px) {
+      header { padding:14px 4%; }
+      .hero  { padding:60px 5% 80px; }
+      .step-num { width:56px;height:56px; }
+      .step:not(:last-child)::after { left:27px;top:58px; }
+      .price-card { padding:44px 24px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ① Header -->
+<header>
+  <a class="logo" href="#"><span class="l1">ミスター</span><span class="l2">サイト公開</span></a>
+  <a class="btn-main" href="#form">無料診断を申し込む</a>
+</header>
+
+<!-- ② Hero -->
+<section class="hero">
+  <div class="bubble b1"></div>
+  <div class="bubble b2"></div>
+  <div class="bubble b3"></div>
+  <div class="hero-badge">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="12" cy="10" r="3"/><path d="M7 19c0-2.8 2.2-5 5-5s5 2.2 5 5"/></svg>
+    AIサイト × 公開サポート
+  </div>
+  <h1><em>AIで作ったサイト、</em><br>公開してみませんか？</h1>
+  <p class="hero-sub">まずは作ったサイトが動くか<strong>無料診断！</strong></p>
+  <a class="btn-main" href="#form">無料診断を申し込む →</a>
+</section>
+
+<!-- ③ For Whom -->
+<section class="for-whom">
+  <h2 class="section-title">こんな方へ</h2>
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+        </svg>
+      </div>
+      <p>ドメインやサーバーの設定で<br>引っかかっている…</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+      </div>
+      <p>せっかくAIで作ったサイト、<br>公開して運営を始めたい！</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      </div>
+      <p>今週中にサクッと<br>公開してしまいたい！</p>
+    </div>
+  </div>
+</section>
+
+<!-- ④ Steps -->
+<section>
+  <h2 class="section-title">3ステップで公開完了</h2>
+  <div class="steps-wrap">
+    <div class="step">
+      <div class="step-num">STEP<span>1</span></div>
+      <div class="step-body">
+        <h3>
+          <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          無料診断
+        </h3>
+        <p>HTMLファイルを送るだけ。まず動作確認をします。費用はかかりません！</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">STEP<span>2</span></div>
+      <div class="step-body">
+        <h3>
+          <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg>
+          OK判定後・お支払い
+        </h3>
+        <p>診断でOKが出たら、お支払い後すぐに公開作業を開始します。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">STEP<span>3</span></div>
+      <div class="step-body">
+        <h3>
+          <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          公開完了・URL納品
+        </h3>
+        <p>URLをお渡しします。最短翌日で公開！あなたのサイトがネットに登場します。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑤ Pricing -->
+<section class="pricing">
+  <h2 class="section-title">料金</h2>
+  <div class="price-card">
+    <div class="price-badge">先着10名様 限定価格！</div>
+    <p class="price-old">通常 ¥30,000</p>
+    <p class="price-new">¥20,000</p>
+    <p class="price-note">税抜 ／ 先着10名様限定</p>
+    <ul class="price-includes">
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Vercel へのデプロイ
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        独自ドメイン設定
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        お問い合わせフォーム設置
+      </li>
+    </ul>
+    <p class="price-extra">※ ドメイン取得費用のみ実費別途となります</p>
+  </div>
+</section>
+
+<!-- ⑥ Notes -->
+<section class="notes">
+  <h2 class="section-title">ご注意事項</h2>
+  <ul class="notes-list">
+    <li>コードの修正・デバッグへの対応はサービス対象外です。</li>
+    <li>診断でNGになった場合は、AIに修正いただいた後に再度ご送付ください。</li>
+    <li>WordPressなどのCMS連携は対応外となっています。</li>
+  </ul>
+</section>
+
+<!-- ⑦ Form -->
+<section class="form-section" id="form">
+  <h2 class="section-title">無料診断を申し込む</h2>
+  <div class="iframe-wrap">
+    <!--
+      ここに Google フォームの埋め込みコードを貼り付けてください
+      例:
+      <iframe src="https://docs.google.com/forms/d/e/xxxxxxxx/viewform?embedded=true"
+              width="700" height="520" frameborder="0" marginheight="0" marginwidth="0">
+        読み込んでいます…
+      </iframe>
+    -->
+    <div class="iframe-placeholder">
+      <strong>Googleフォーム</strong>
+      ここに Google フォームの<br>iframe を貼り付けてください
+    </div>
+  </div>
+</section>
+
+<!-- ⑧ About -->
+<section class="about">
+  <h2 class="section-title">運営者紹介</h2>
+  <div class="about-inner">
+    <div class="avatar">
+      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="28" r="16" fill="rgba(255,255,255,0.9)"/>
+        <path d="M10 72c0-16.6 13.4-30 30-30s30 13.4 30 30" fill="rgba(255,255,255,0.9)"/>
+      </svg>
+    </div>
+    <div class="about-text">
+      <h3>ミスターサイト公開</h3>
+      <p>AIと公開作業が得意なミスターです。<br>お気軽にどうぞ！一緒にあなたのサイトをネットへ送り出しましょう。</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>© 2025 ミスターサイト公開 All rights reserved.</p>
+</footer>
+
+</body>
+</html>
